@@ -1,7 +1,7 @@
-package com.example.model
+package com.example.HttpTrading.SmaDcaTrading.Serialization
 
-import io.ktor.server.http.content.resourceClasspathResource
 import kotlinx.serialization.Serializable
+
 
 @Serializable
 data class Order(
@@ -30,3 +30,4 @@ enum class OrderType(val orderType: String) {
     limit("Limit"),
     market("Market"),
 }
+

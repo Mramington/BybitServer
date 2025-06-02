@@ -7,5 +7,6 @@ interface SmaDcaStrategyRepository {
     suspend fun removeSmaDcaStrategy(userId: String): Boolean
     suspend fun addSmaDcaStrategy(smaDcaStrategy: SmaDcaStrategy): SmaDcaStrategyDAO
     suspend fun smaDcaStrategyByUserId(userId: String): SmaDcaStrategy?
-    suspend fun updateSmaDcaStrategy(smaDcaStrategy: SmaDcaStrategy, lastOrder: String)
+    suspend fun updateSmaDcaStrategy(smaDcaStrategy: SmaDcaStrategy, lastOrder: String): Int
+    suspend fun allSmaDcaStrategyByUserId(userId: String): List<SmaDcaStrategy>
 }

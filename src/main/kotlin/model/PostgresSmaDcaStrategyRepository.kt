@@ -2,14 +2,10 @@ package com.example.model
 
 import com.example.db.SmaDcaStrategyDAO
 import com.example.db.SmaDcaStrategyTable
-import com.example.db.daoToModel
 import com.example.db.suspendTransaction
 import org.jetbrains.exposed.sql.deleteWhere
-import org.jetbrains.exposed.sql.insert
 import com.example.db.SDdaoToModel
-import com.example.db.suspendTransaction
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
-import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.update
 import org.jetbrains.exposed.sql.and
 
@@ -49,7 +45,14 @@ class PostgresSmaDcaStrategyRepository : SmaDcaStrategyRepository {
             .firstOrNull()
     }
 
-    override suspend fun updateSmaDcaStrategy(smaDcaStrategy: SmaDcaStrategy, lastOrder: String) {
+    override suspend fun allSmaDcaStrategyByUserId(userId: String): List<SmaDcaStrategy> = suspendTransaction {
+        SmaDcaStrategyDAO
+            .find { (SmaDcaStrategyTable.userId eq userId) }
+            .map(::SDdaoToModel)
+            .toList()
+    }
+
+    override suspend fun updateSmaDcaStrategy(smaDcaStrategy: SmaDcaStrategy, lastOrder: String) = suspendTransaction {
         SmaDcaStrategyTable.update(where = {
             (SmaDcaStrategyTable.interval eq smaDcaStrategy.interval) and
             (SmaDcaStrategyTable.limit eq smaDcaStrategy.limit) and

@@ -3,9 +3,8 @@ package com.example.HttpTrading.SmaDcaTrading.Serialization
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
 
-
 @Serializable
-data class PriceResponse (
+data class PriceResponse(
     val retCode: Int,
     val retMsg: String,
     val result: PriseResult,
@@ -14,7 +13,7 @@ data class PriceResponse (
 )
 
 @Serializable
-data class PriseResult (
+data class PriseResult(
     val category: String,
     val list: List<LastPrice>,
 )
@@ -35,4 +34,3 @@ data class LastPrice(
     val volume24h: String,
     val usdIndexPrice: String,
 )
-

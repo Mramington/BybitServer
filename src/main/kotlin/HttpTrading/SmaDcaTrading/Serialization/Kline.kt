@@ -11,15 +11,15 @@ data class KlineRequest(
 )
 
 @Serializable
-data class KlineRes (
+data class KlineRes(
     val retCode: Int,
     val retMsg: String,
     val result: Kline,
 )
 
 @Serializable
-data class Kline (
+data class Kline(
     val category: String,
     val symbol: String,
-    val list: List<List<String>>
+    val list: List<List<String>>,
 )

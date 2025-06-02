@@ -1,11 +1,11 @@
 package com.example.db
 
+import com.example.model.SmaDcaStrategy
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.dao.IntEntity
 import org.jetbrains.exposed.dao.IntEntityClass
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.IntIdTable
-import com.example.model.SmaDcaStrategy
 import org.jetbrains.exposed.sql.Transaction
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 
@@ -39,19 +39,17 @@ class SmaDcaStrategyDAO(id: EntityID<Int>) : IntEntity(id) {
     var limit by SmaDcaStrategyTable.limit
 }
 
-suspend fun <T> suspendTransaction(block: Transaction.() -> T): T =
-    newSuspendedTransaction(Dispatchers.IO, statement = block)
+suspend fun <T> suspendTransaction(block: Transaction.() -> T): T = newSuspendedTransaction(Dispatchers.IO, statement = block)
 
-fun SDdaoToModel(dao: SmaDcaStrategyDAO) = SmaDcaStrategy(
-    dao.userId,
-
-    dao.apiKey,
-    dao.apiSecret,
-    dao.lastOrder,
-    dao.dcaInterval,
-
-    dao.qta,
-    dao.symbol,
-    dao.interval,
-    dao.limit
-)
+fun SDdaoToModel(dao: SmaDcaStrategyDAO) =
+    SmaDcaStrategy(
+        dao.userId,
+        dao.apiKey,
+        dao.apiSecret,
+        dao.lastOrder,
+        dao.dcaInterval,
+        dao.qta,
+        dao.symbol,
+        dao.interval,
+        dao.limit,
+    )

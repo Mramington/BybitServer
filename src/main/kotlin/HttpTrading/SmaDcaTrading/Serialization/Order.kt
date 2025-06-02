@@ -2,7 +2,6 @@ package com.example.HttpTrading.SmaDcaTrading.Serialization
 
 import kotlinx.serialization.Serializable
 
-
 @Serializable
 data class Order(
     val category: Category,
@@ -30,4 +29,3 @@ enum class OrderType(val orderType: String) {
     limit("Limit"),
     market("Market"),
 }
-

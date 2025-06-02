@@ -14,7 +14,7 @@ import io.ktor.server.routing.*
 fun Application.configureRouting(repository: SmaDcaStrategyRepository) {
     install(StatusPages) {
         exception<Throwable> { call, cause ->
-            call.respondText(text = "500: $cause" , status = HttpStatusCode.InternalServerError)
+            call.respondText(text = "500: $cause", status = HttpStatusCode.InternalServerError)
         }
     }
     install(ContentNegotiation) {
@@ -25,8 +25,9 @@ fun Application.configureRouting(repository: SmaDcaStrategyRepository) {
             get("/{userId}") {
                 val userId = call.parameters["userId"] ?: return@get call.respond(HttpStatusCode.BadRequest, "Missing userId")
                 val all = repository.allSmaDcaStrategyByUserId(userId)
-                if (all.isEmpty())
+                if (all.isEmpty()) {
                     call.respond(HttpStatusCode.NotFound, "Strategy not found")
+                }
                 call.respond(HttpStatusCode.OK, all)
             }
 

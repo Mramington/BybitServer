@@ -3,7 +3,10 @@ package com.example.HttpTrading.Encryption
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 
-fun hmacSha256Hex(data: String, key: String): String {
+fun hmacSha256Hex(
+    data: String,
+    key: String,
+): String {
     val algorithm = "HmacSHA256"
     val mac = Mac.getInstance(algorithm)
     val secretKeySpec = SecretKeySpec(key.toByteArray(Charsets.UTF_8), algorithm)

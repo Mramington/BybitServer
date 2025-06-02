@@ -1,5 +1,8 @@
 package com.example.HttpTrading.SmaDcaTrading
 
+import com.example.HttpTrading.Encryption.hmacSha256Hex
+import com.example.HttpTrading.Server.*
+import com.example.HttpTrading.SmaDcaTrading.Serialization.*
 import com.example.HttpTrading.SmaDcaTrading.Serialization.Category
 import com.example.HttpTrading.SmaDcaTrading.Serialization.Kline
 import com.example.HttpTrading.SmaDcaTrading.Serialization.KlineRes
@@ -15,18 +18,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
-import com.example.HttpTrading.SmaDcaTrading.Serialization.*
-import com.example.HttpTrading.Encryption.hmacSha256Hex
-import com.example.HttpTrading.Server.*
 
 class SmaDcaTrader(
     private val smaDcaStrategyRepository: SmaDcaStrategyRepository,
 ) {
-    private val json = Json {
-        encodeDefaults = true
-        ignoreUnknownKeys = true
-    }
-
+    private val json =
+        Json {
+            encodeDefaults = true
+            ignoreUnknownKeys = true
+        }
 
     init {
         println("init SmaDcaTrader")
@@ -61,17 +61,19 @@ class SmaDcaTrader(
         println(sma)
 
         println("start to requesting price")
-        val currentPrice = currentPrice(
-            symbol = smaDcaStrategy.symbol,
-            apiKey = smaDcaStrategy.apiKey,
-            apiSecret = smaDcaStrategy.apiSecret
-        )
+        val currentPrice =
+            currentPrice(
+                symbol = smaDcaStrategy.symbol,
+                apiKey = smaDcaStrategy.apiKey,
+                apiSecret = smaDcaStrategy.apiSecret,
+            )
         println("lastPrice ${currentPrice.lastPrice}")
 
-        if (sma < currentPrice.lastPrice.toDouble())
+        if (sma < currentPrice.lastPrice.toDouble()) {
             placeOrder(smaDcaStrategy, Side.sell)
-        else
+        } else {
             placeOrder(smaDcaStrategy, Side.buy)
+        }
 
         println("update strategy")
         smaDcaStrategyRepository.updateSmaDcaStrategy(smaDcaStrategy, System.currentTimeMillis().toString())
@@ -82,9 +84,9 @@ class SmaDcaTrader(
         category: Category = Category.spot,
         symbol: String,
         apiKey: String,
-        apiSecret: String
+        apiSecret: String,
     ): LastPrice {
-        val queryString = "category=${category}&symbol=$symbol"
+        val queryString = "category=$category&symbol=$symbol"
         val response = BybitServer.get(apiKey, apiSecret, queryString, SuperInfo.getTicketEndpoint)
 
         println(response.bodyAsText())
@@ -94,27 +96,32 @@ class SmaDcaTrader(
     suspend fun klineResponse(smaDcaStrategy: SmaDcaStrategy): Kline {
         val queryString =
             "category=${Category.spot}&symbol=${smaDcaStrategy.symbol}" +
-                    "&interval=${smaDcaStrategy.interval}&limit=${smaDcaStrategy.limit}"
+                "&interval=${smaDcaStrategy.interval}&limit=${smaDcaStrategy.limit}"
 
-        val response = BybitServer.get(
-            smaDcaStrategy.apiKey,
-            smaDcaStrategy.apiSecret,
-            queryString,
-            SuperInfo.getKlineEndpoint
-        )
+        val response =
+            BybitServer.get(
+                smaDcaStrategy.apiKey,
+                smaDcaStrategy.apiSecret,
+                queryString,
+                SuperInfo.getKlineEndpoint,
+            )
 
         println(response.bodyAsText())
         return json.decodeFromString<KlineRes>(response.bodyAsText()).result
     }
 
-    suspend fun placeOrder(smaDcaStrategy: SmaDcaStrategy, side: Side): Boolean {
-        val order = Order(
-            category = Category.spot,
-            symbol = smaDcaStrategy.symbol,
-            side = side,
-            orderType = OrderType.market,
-            qty = smaDcaStrategy.qta
-        )
+    suspend fun placeOrder(
+        smaDcaStrategy: SmaDcaStrategy,
+        side: Side,
+    ): Boolean {
+        val order =
+            Order(
+                category = Category.spot,
+                symbol = smaDcaStrategy.symbol,
+                side = side,
+                orderType = OrderType.market,
+                qty = smaDcaStrategy.qta,
+            )
 //
 //        val mp = mapOf(
 //        "category" to "spot",
@@ -125,27 +132,24 @@ class SmaDcaTrader(
 
         val bodyString = json.encodeToString(order)
 
-        val response = BybitServer.post(
-            smaDcaStrategy.apiKey,
-            smaDcaStrategy.apiSecret,
-            bodyString,
-            SuperInfo.createOrderEndpoint
-        )
+        val response =
+            BybitServer.post(
+                smaDcaStrategy.apiKey,
+                smaDcaStrategy.apiSecret,
+                bodyString,
+                SuperInfo.createOrderEndpoint,
+            )
 
         println(response.bodyAsText())
         return json.decodeFromString<RetMsg>(response.bodyAsText()).retMsg == "OK"
     }
 
-
-
     suspend fun calculateSma(kline: Kline): Double = kline.list.map { it[4].toDouble() }.average()
-
 
     suspend fun genSignature(apiSecret: String): String {
         val expires = System.currentTimeMillis() + 1000
-        val signaturePayload = "GET/realtime${expires}"
+        val signaturePayload = "GET/realtime$expires"
 
         return hmacSha256Hex(signaturePayload, apiSecret)
     }
 }
-

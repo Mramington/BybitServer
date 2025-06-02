@@ -17,8 +17,8 @@ fun Application.module() {
 }
 
 object SuperInfo {
-    const val testnetUrl = "https://api-testnet.bybit.com"
-    const val createOrderEndpoint = "/v5/order/create"
-    const val getTicketEndpoint = "/v5/market/tickers"
-    const val getKlineEndpoint = "/v5/market/kline"
+    const val TESTNET_URL = "https://api-testnet.bybit.com"
+    const val CREATE_ORDER_ENDPOINT = "/v5/order/create"
+    const val GET_TICKET_ENDPOINT = "/v5/market/tickers"
+    const val GET_KLINE_ENDPOINT = "/v5/market/kline"
 }

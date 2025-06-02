@@ -1,0 +1,2 @@
+[*.{kt,kts}]
+ktlint_ignore = "**/generated/**", "**/build/**"

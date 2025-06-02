@@ -13,6 +13,13 @@ application {
     mainClass = "io.ktor.server.netty.EngineMain"
 }
 
+configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
+    filter {
+        exclude("**/generated/**")
+        exclude("**/ktlintTestSourceSetFormat.txt")
+    }
+}
+
 tasks.test {
     useJUnitPlatform()
 }

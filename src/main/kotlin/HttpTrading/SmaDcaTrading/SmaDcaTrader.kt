@@ -1,13 +1,15 @@
 package com.example.HttpTrading.SmaDcaTrading
 
 import com.example.HttpTrading.Encryption.hmacSha256Hex
-import com.example.HttpTrading.Server.*
-import com.example.HttpTrading.SmaDcaTrading.Serialization.*
+import com.example.HttpTrading.Server.BybitServer
 import com.example.HttpTrading.SmaDcaTrading.Serialization.Category
 import com.example.HttpTrading.SmaDcaTrading.Serialization.Kline
 import com.example.HttpTrading.SmaDcaTrading.Serialization.KlineRes
+import com.example.HttpTrading.SmaDcaTrading.Serialization.LastPrice
 import com.example.HttpTrading.SmaDcaTrading.Serialization.Order
 import com.example.HttpTrading.SmaDcaTrading.Serialization.OrderType
+import com.example.HttpTrading.SmaDcaTrading.Serialization.PriceResponse
+import com.example.HttpTrading.SmaDcaTrading.Serialization.RetMsg
 import com.example.HttpTrading.SmaDcaTrading.Serialization.Side
 import com.example.SuperInfo
 import com.example.model.SmaDcaStrategy
@@ -87,7 +89,7 @@ class SmaDcaTrader(
         apiSecret: String,
     ): LastPrice {
         val queryString = "category=$category&symbol=$symbol"
-        val response = BybitServer.get(apiKey, apiSecret, queryString, SuperInfo.getTicketEndpoint)
+        val response = BybitServer.get(apiKey, apiSecret, queryString, SuperInfo.GET_TICKET_ENDPOINT)
 
         println(response.bodyAsText())
         return json.decodeFromString<PriceResponse>(response.bodyAsText()).result.list[0]
@@ -103,7 +105,7 @@ class SmaDcaTrader(
                 smaDcaStrategy.apiKey,
                 smaDcaStrategy.apiSecret,
                 queryString,
-                SuperInfo.getKlineEndpoint,
+                SuperInfo.GET_KLINE_ENDPOINT,
             )
 
         println(response.bodyAsText())
@@ -137,7 +139,7 @@ class SmaDcaTrader(
                 smaDcaStrategy.apiKey,
                 smaDcaStrategy.apiSecret,
                 bodyString,
-                SuperInfo.createOrderEndpoint,
+                SuperInfo.CREATE_ORDER_ENDPOINT,
             )
 
         println(response.bodyAsText())

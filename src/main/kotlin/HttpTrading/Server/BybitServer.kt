@@ -14,7 +14,7 @@ import io.ktor.http.contentType
 
 object BybitServer : Server {
     private var client = HttpClient(CIO)
-    private val url = SuperInfo.testnetUrl
+    private val url = SuperInfo.TESTNET_URL
 
     override suspend fun post(
         apiKey: String,

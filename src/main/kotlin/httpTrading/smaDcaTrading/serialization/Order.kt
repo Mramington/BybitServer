@@ -13,19 +13,19 @@ data class Order(
 
 @Serializable
 enum class Category(val category: String) {
-    linear("linear"),
-    inverse("inverse"),
-    spot("spot"),
+    Linear("linear"),
+    Inverse("inverse"),
+    Spot("spot"),
 }
 
 @Serializable
 enum class Side(val side: String) {
-    buy("Buy"),
-    sell("Sell"),
+    Buy("Buy"),
+    Sell("Sell"),
 }
 
 @Serializable
 enum class OrderType(val orderType: String) {
-    limit("Limit"),
-    market("Market"),
+    Limit("Limit"),
+    Market("Market"),
 }

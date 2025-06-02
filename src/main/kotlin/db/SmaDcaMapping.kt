@@ -41,7 +41,7 @@ class SmaDcaStrategyDAO(id: EntityID<Int>) : IntEntity(id) {
 
 suspend fun <T> suspendTransaction(block: Transaction.() -> T): T = newSuspendedTransaction(Dispatchers.IO, statement = block)
 
-fun SDdaoToModel(dao: SmaDcaStrategyDAO) =
+fun sDdaoToModel(dao: SmaDcaStrategyDAO) =
     SmaDcaStrategy(
         dao.userId,
         dao.apiKey,

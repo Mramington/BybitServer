@@ -1,8 +1,8 @@
 package com.example.model
 
-import com.example.db.SDdaoToModel
 import com.example.db.SmaDcaStrategyDAO
 import com.example.db.SmaDcaStrategyTable
+import com.example.db.sDdaoToModel
 import com.example.db.suspendTransaction
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.and
@@ -12,7 +12,7 @@ import org.jetbrains.exposed.sql.update
 class PostgresSmaDcaStrategyRepository : SmaDcaStrategyRepository {
     override suspend fun allSmaDcaStrategies(): List<SmaDcaStrategy> =
         suspendTransaction {
-            SmaDcaStrategyDAO.all().map(::SDdaoToModel)
+            SmaDcaStrategyDAO.all().map(::sDdaoToModel)
         }
 
     override suspend fun removeSmaDcaStrategy(userId: String): Boolean =
@@ -46,7 +46,7 @@ class PostgresSmaDcaStrategyRepository : SmaDcaStrategyRepository {
             SmaDcaStrategyDAO
                 .find { (SmaDcaStrategyTable.userId eq userId) }
                 .limit(1)
-                .map(::SDdaoToModel)
+                .map(::sDdaoToModel)
                 .firstOrNull()
         }
 
@@ -54,7 +54,7 @@ class PostgresSmaDcaStrategyRepository : SmaDcaStrategyRepository {
         suspendTransaction {
             SmaDcaStrategyDAO
                 .find { (SmaDcaStrategyTable.userId eq userId) }
-                .map(::SDdaoToModel)
+                .map(::sDdaoToModel)
                 .toList()
         }
 

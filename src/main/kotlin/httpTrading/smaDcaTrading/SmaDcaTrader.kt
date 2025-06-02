@@ -72,9 +72,9 @@ class SmaDcaTrader(
         println("lastPrice ${currentPrice.lastPrice}")
 
         if (sma < currentPrice.lastPrice.toDouble()) {
-            placeOrder(smaDcaStrategy, Side.sell)
+            placeOrder(smaDcaStrategy, Side.Sell)
         } else {
-            placeOrder(smaDcaStrategy, Side.buy)
+            placeOrder(smaDcaStrategy, Side.Buy)
         }
 
         println("update strategy")
@@ -83,7 +83,7 @@ class SmaDcaTrader(
     }
 
     suspend fun currentPrice(
-        category: Category = Category.spot,
+        category: Category = Category.Spot,
         symbol: String,
         apiKey: String,
         apiSecret: String,
@@ -97,7 +97,7 @@ class SmaDcaTrader(
 
     suspend fun klineResponse(smaDcaStrategy: SmaDcaStrategy): Kline {
         val queryString =
-            "category=${Category.spot}&symbol=${smaDcaStrategy.symbol}" +
+            "category=${Category.Spot}&symbol=${smaDcaStrategy.symbol}" +
                 "&interval=${smaDcaStrategy.interval}&limit=${smaDcaStrategy.limit}"
 
         val response =
@@ -118,19 +118,12 @@ class SmaDcaTrader(
     ): Boolean {
         val order =
             Order(
-                category = Category.spot,
+                category = Category.Spot,
                 symbol = smaDcaStrategy.symbol,
                 side = side,
-                orderType = OrderType.market,
+                orderType = OrderType.Market,
                 qty = smaDcaStrategy.qta,
             )
-//
-//        val mp = mapOf(
-//        "category" to "spot",
-//        "symbol" to smaDcaStrategy.symbol,
-//        "side" to side,
-//        "orderType" to "Market",
-//        "qty" to smaDcaStrategy.qta)
 
         val bodyString = json.encodeToString(order)
 

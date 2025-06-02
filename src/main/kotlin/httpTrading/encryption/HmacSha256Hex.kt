@@ -1,4 +1,4 @@
-package com.example.HttpTrading.Encryption
+package com.example.httpTrading.encryption
 
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec

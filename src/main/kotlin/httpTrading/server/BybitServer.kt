@@ -1,7 +1,7 @@
-package com.example.HttpTrading.Server
+package com.example.httpTrading.server
 
-import com.example.HttpTrading.Encryption.hmacSha256Hex
 import com.example.SuperInfo
+import com.example.httpTrading.encryption.hmacSha256Hex
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.request.get

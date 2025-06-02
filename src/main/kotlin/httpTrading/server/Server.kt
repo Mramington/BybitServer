@@ -1,4 +1,4 @@
-package com.example.HttpTrading.Server
+package com.example.httpTrading.server
 
 interface Server {
     suspend fun post(

@@ -14,7 +14,7 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class PostgresSmaDcaStrategyRepositoryTest {
+class RepositoryTest {
     private val repository = PostgresSmaDcaStrategyRepository()
 
     @BeforeAll

@@ -1,4 +1,4 @@
-package com.example.HttpTrading.SmaDcaTrading.Serialization
+package com.example.httpTrading.smaDcaTrading.serialization
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement

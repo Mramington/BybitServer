@@ -1,7 +1,6 @@
 package com.example.httpTrading.smaDcaTrading
 
 import com.example.SuperInfo
-import com.example.httpTrading.encryption.hmacSha256Hex
 import com.example.httpTrading.server.BybitServer
 import com.example.httpTrading.smaDcaTrading.serialization.Kline
 import com.example.httpTrading.smaDcaTrading.serialization.KlineRes

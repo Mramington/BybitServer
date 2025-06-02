@@ -3,7 +3,6 @@ package com.example.httpTrading.smaDcaTrading
 import com.example.SuperInfo
 import com.example.httpTrading.encryption.hmacSha256Hex
 import com.example.httpTrading.server.BybitServer
-import com.example.httpTrading.smaDcaTrading.serialization.Category
 import com.example.httpTrading.smaDcaTrading.serialization.Kline
 import com.example.httpTrading.smaDcaTrading.serialization.KlineRes
 import com.example.httpTrading.smaDcaTrading.serialization.LastPrice
@@ -35,15 +34,14 @@ class SmaDcaTrader(
         CoroutineScope(Dispatchers.Default).launch {
             smaDcaStrategyRepository.allSmaDcaStrategies().forEach {
                 launch {
-                    var fl = processSmaDcaStrategy(it)
-                    while (fl)
-                        fl = processSmaDcaStrategy(it)
+                    while (true)
+                        processSmaDcaStrategy(it)
                 }
             }
         }
     }
 
-    suspend fun processSmaDcaStrategy(smaDcaStrategy: SmaDcaStrategy): Boolean {
+    suspend fun processSmaDcaStrategy(smaDcaStrategy: SmaDcaStrategy) {
         val dcaInterval = smaDcaStrategy.dcaInterval.toLong()
         var lastOrder = smaDcaStrategy.lastOrder.toLong()
         var time = System.currentTimeMillis()
@@ -71,7 +69,7 @@ class SmaDcaTrader(
             )
         println("lastPrice ${currentPrice.lastPrice}")
 
-        if (sma < currentPrice.lastPrice.toDouble()) {
+        if (sma > currentPrice.lastPrice.toDouble()) {
             placeOrder(smaDcaStrategy, Side.Sell)
         } else {
             placeOrder(smaDcaStrategy, Side.Buy)
@@ -79,11 +77,10 @@ class SmaDcaTrader(
 
         println("update strategy")
         smaDcaStrategyRepository.updateSmaDcaStrategy(smaDcaStrategy, System.currentTimeMillis().toString())
-        return true
     }
 
     suspend fun currentPrice(
-        category: Category = Category.Spot,
+        category: String = "spot",
         symbol: String,
         apiKey: String,
         apiSecret: String,
@@ -97,7 +94,7 @@ class SmaDcaTrader(
 
     suspend fun klineResponse(smaDcaStrategy: SmaDcaStrategy): Kline {
         val queryString =
-            "category=${Category.Spot}&symbol=${smaDcaStrategy.symbol}" +
+            "category=${"spot"}&symbol=${smaDcaStrategy.symbol}" +
                 "&interval=${smaDcaStrategy.interval}&limit=${smaDcaStrategy.limit}"
 
         val response =
@@ -118,7 +115,7 @@ class SmaDcaTrader(
     ): Boolean {
         val order =
             Order(
-                category = Category.Spot,
+                category = "spot",
                 symbol = smaDcaStrategy.symbol,
                 side = side,
                 orderType = OrderType.Market,
@@ -140,11 +137,4 @@ class SmaDcaTrader(
     }
 
     suspend fun calculateSma(kline: Kline): Double = kline.list.map { it[4].toDouble() }.average()
-
-    suspend fun genSignature(apiSecret: String): String {
-        val expires = System.currentTimeMillis() + 1000
-        val signaturePayload = "GET/realtime$expires"
-
-        return hmacSha256Hex(signaturePayload, apiSecret)
-    }
 }

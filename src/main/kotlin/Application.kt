@@ -9,9 +9,14 @@ fun main(args: Array<String>) {
 
 fun Application.module() {
     val repository = PostgresSmaDcaStrategyRepository()
+    val config = Config(
+        url = "jdbc:postgresql://localhost:5432/test",
+        driver = "org.postgresql.Driver",
+        user = "postgres",
+        password = "Gnim36343533",
+    )
 
-    println("start app")
-    configureDatabases()
+    configureDatabases(config)
     configureTrading(repository)
     configureRouting(repository)
 }

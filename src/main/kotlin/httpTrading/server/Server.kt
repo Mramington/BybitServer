@@ -11,7 +11,7 @@ interface Server {
     suspend fun get(
         apiKey: String,
         apiSecret: String,
-        bodyString: String,
+        queryString: String,
         endpoint: String,
     ): io.ktor.client.statement.HttpResponse
 }

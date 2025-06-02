@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class KlineRequest(
-    val category: Category,
+    val category: String,
     val symbol: String,
     val interval: String,
     val limit: String,

@@ -37,7 +37,6 @@ object BybitServer : Server {
                 headers.append("X-BAPI-RECV-WINDOW", recvWindow)
             }
 
-        println(response.bodyAsText())
         return response
     }
 

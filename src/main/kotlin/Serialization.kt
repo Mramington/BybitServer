@@ -1,5 +1,6 @@
 package com.example
 
+import com.example.model.StrategyRepository
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
@@ -17,10 +18,12 @@ import java.time.Duration
 import kotlin.time.Duration.Companion.seconds
 import org.jetbrains.exposed.sql.*
 
-fun Application.configureSerialization() {
+fun Application.configureSerialization(repository: StrategyRepository) {
+    install(ContentNegotiation) {
+        json()
+    }
+
     routing {
-        get("/json/kotlinx-serialization") {
-                call.respond(mapOf("hello" to "world"))
-            }
+
     }
 }

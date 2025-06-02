@@ -4,6 +4,8 @@ ktor:
             - com.example.ApplicationKt.module
     deployment:
         port: 8080
+        host: 0.0.0.0
+#        host: "wss://stream-testnet.bybit.com"
 postgres:
   url: "jdbc:postgresql://localhost/default"
   user: username

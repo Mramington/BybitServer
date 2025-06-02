@@ -1,5 +1,7 @@
 package com.example
 
+import com.example.WebSockets.configureSockets
+import com.example.model.PostgresSmaDcaStrategyRepository
 import io.ktor.server.application.*
 
 fun main(args: Array<String>) {
@@ -7,8 +9,18 @@ fun main(args: Array<String>) {
 }
 
 fun Application.module() {
-    configureSockets()
-    configureSerialization()
+//    configureSockets()
+    val repository = PostgresSmaDcaStrategyRepository()
+
+    configureSerialization(repository)
     configureDatabases()
     configureRouting()
+}
+
+
+object SuperInfo {
+    const val testnetUrl = "https://api-testnet.bybit.com"
+    const val createOrderEndpoint = "/v5/order/create"
+    const val getTicketEndpoint = "/v5/market/tickers"
+    const val getKlineEndpoint = "/v5/market/kline"
 }
